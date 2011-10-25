@@ -208,70 +208,75 @@ true: /true/
 false: /false/
 null: /null/
 
----- yaml
-# Compiled JSON Pegex Grammar
-+top: json
-json:
-  .any:
-  - .ref: map
-  - .ref: seq
-node:
-  .any:
-  - .ref: map
-  - .ref: seq
-  - .ref: scalar
-map:
-  .all:
-  - .rgx: \s*\{\s*
-  - +min: 0
-    .ref: pair
-    .sep:
-      .rgx: \s*,\s*
-  - .rgx: \s*\}\s*
-pair:
-  .all:
-  - .ref: string
-  - .rgx: \s*:\s*
-  - .ref: node
-seq:
-  .all:
-  - .rgx: \s*\[\s*
-  - +min: 0
-    .ref: node
-    .sep:
-      .rgx: \s*,\s*
-  - .rgx: \s*\]\s*
-scalar:
-  .any:
-  - .ref: string
-  - .ref: number
-  - .ref: boolean
-  - .ref: 'null'
-string:
-  .rgx: '"((?:\\\\|\\"|[^"\n])*)"'
-number:
-  .rgx: (\-?[0-9]+(?:\.[0-9]*)?|\.[0-9]+)
-boolean:
-  .any:
-  - .ref: 'true'
-  - .ref: 'false'
-'true':
-  .rgx: 'true'
-'false':
-  .rgx: 'false'
-'null':
-  .rgx: 'null'
+----
+ # Compiled JSON Pegex Grammar
+ +top: json
+ json:
+   .any:
+   - .ref: map
+   - .ref: seq
+ node:
+   .any:
+   - .ref: map
+   - .ref: seq
+   - .ref: scalar
+ map:
+   .all:
+   - .rgx: \s*\{\s*
+   - +min: 0
+     .ref: pair
+     .sep:
+       .rgx: \s*,\s*
+   - .rgx: \s*\}\s*
+ pair:
+   .all:
+   - .ref: string
+   - .rgx: \s*:\s*
+   - .ref: node
+ seq:
+   .all:
+   - .rgx: \s*\[\s*
+   - +min: 0
+     .ref: node
+     .sep:
+       .rgx: \s*,\s*
+   - .rgx: \s*\]\s*
+ scalar:
+   .any:
+   - .ref: string
+   - .ref: number
+   - .ref: boolean
+   - .ref: 'null'
+ string:
+   .rgx: '"((?:\\\\|\\"|[^"\n])*)"'
+ number:
+   .rgx: (\-?[0-9]+(?:\.[0-9]*)?|\.[0-9]+)
+ boolean:
+   .any:
+   - .ref: 'true'
+   - .ref: 'false'
+ 'true':
+   .rgx: 'true'
+ 'false':
+   .rgx: 'false'
+ 'null':
+   .rgx: 'null'
 
 ---- i0
-
 == How Pegex Works
 
     # Example usage in Python
     from pegex import Grammar
 
-    data_tree =
-        Grammar(text=grammar_text, receiver=AST).parse(input)
+    data_tree = Grammar(text=grammar_text).parse(input)
 
+
++    # Example usage in Perl
+    use Pegex;
+
+    data_tree = pegex(grammar_text)->parse(input);
+
++    data_tree = Pegex::Grammar->new(text => grammar_text)->parse(input);
 
 ---- i0
                             Parsing a language called "Foo"
@@ -280,7 +285,7 @@ boolean:
                               .-----------------------.
   .--------------------.      |    Pegex::Compiler    |
   |    Foo Language    |      |-----------------------|    Serialize
-  |--------------------|----->| Pegex::Grammar::Pegex |---------.
+  |--------------------|----->| Pegex::Pegex::Grammar |---------.
   | Pegex grammar text |      | Pegex::Receiver       |         |
   '--------------------'      '-----------------------'         v
   ......................                  |                 .------.
@@ -293,10 +298,10 @@ boolean:
                                           |                 | Perl |
                                           v                 '------'
                                .---------------------.      .--------.
-                               | Pegex::Grammar::Foo |      | Python |
+                               | Pegex::Foo::Grammar |      | Python |
                                |---------------------|      '--------'
                                | Pegex::Parser       |      .-----.
-                               | Pegex::AST::Foo     |      | etc |
+                               | Pegex::Foo::AST     |      | etc |
    .-----------------.         '---------------------'      '-----'
    |  Foo Language   |                    |
    |-----------------|------------------->| parse()
@@ -369,30 +374,32 @@ perl -MXXX -MPegex -e 'XXX pegex("src/pegex.pgx", {wrap=>1})->parse("src/pegex.p
 perl -MXXX -MPegex -e 'XXX pegex("src/pegex.pgx", {receiver=>"Pegex::Pegex::AST"})->parse("src/pegex.pgx")'
 
 ----
-== YAML2
+== Pegex Questions?
+
+----
+== Introducing YAML2
 
 * YAML is a core Acmeist technology
-* YAML is ready for a 2.0 movement
-* Open Source is much richer than 2 years ago
+  * Ruby, Python, Perl, PHP, Java
 
+* YAML is ready for a 2.0 movement
+  * Open Source is much richer than 2 years ago
     %YAML 2.0
 
 * Not (100%) Backwards Compatible with YAML 1.2
-* Compatible with 2011
-* YAML2 Started Today
+  * Compatible with 2011
 
-+       http://yaml2.org
++* YAML2 Started Today
+
+        http://www.yaml2.org
 
 ----
 == YAML2 Goals
 
 * YAML2 will become YAML 2.0
+  * Easy to upgrade from 1.2
 * Keep all the Good Parts
-* Throw out the bad parts
-  * No more >
-  * No crazy default types: yes, no, !!timestamp
-  * Simpler tagging
-  * No key limits
+  * Throw out the bad parts
 * Tests are the Spec
 * Everything on GitHub
   * Community Spec, Tests and Implementation
@@ -412,10 +419,12 @@ perl -MXXX -MPegex -e 'XXX pegex("src/pegex.pgx", {receiver=>"Pegex::Pegex::AST"
 * YPath - Spec Started
 * YSchema
 * JSYNC - JavaScript + YAML(2)
+  * http://jsync.org
+
+----
+== YAML2 Questions?
 
 ----
 == The End
-
-== Questions?
 
 == http://ingydotnet.github.com/pegex-acmeism-sfpm2011-talk/
