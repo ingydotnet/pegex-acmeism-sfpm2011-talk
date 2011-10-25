@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>025</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script>
+function navigate(e) {
+    var keynum = (window.event) // IE
+        ? e.keyCode
+        : e.which;
+    if (keynum == 8) {
+        window.location = "024" + ".html";
+        return false;
+    }
+    if (keynum == 13 || keynum == 32) {
+        window.location = "026" + ".html";
+        return false;
+    }
+    if (keynum == 73 || keynum == 105) {
+        window.location = "index.html";
+        return false;
+    }
+    return true;
+}
+</script>
+</head>
+<body onkeypress="return navigate(event)">
+<pre>                          Some Pegex Trivia...
+     
+         ...before we play with Pegex
+     
+     * Pegex is pretty fast
+       * No optimizations yet
+     * Pegex is self hosting
+       * Pegex parses Pegex
+     * Pegex has no backtracking yet
+       * Not needed yet (&lt;first&gt; &lt;middle&gt;? &lt;last&gt;)
+     * Pegex tests are in TestML
+       * TestML is written in Pegex!
+     * Pegex is full on Perl
+       * Compiler and Runtime
+     * Python has port of the Runtime
+       * Easy to use Perl compiler to bootstrap (YAML, JSON)
+     * Pegex wants to be written in C'Dent
+       * Easier to port and maintain
+     * Pegex Runtime could be in C or C++ or Haskell
+       * libpegex
+     * Pegex Parsers can have multiple Receivers
+       * AST (wrapped and unwrapped) is default Receiver
+       * Receivers can invoke new Parsers
+     * Clean Separation
+       * Compiler = Grammar + Parser + Receiver
+       * All Subclassable or Swap-able
+     * Pegex::Regex
+       * Compare to Regexp::Grammars
+</pre>
+</body>
