@@ -8,7 +8,7 @@ function navigate(e) {
         ? e.keyCode
         : e.which;
     if (keynum == 8) {
-        window.location = "022z.yaml" + ".html";
+        window.location = "022z" + ".html";
         return false;
     }
     if (keynum == 13 || keynum == 32) {
@@ -24,30 +24,39 @@ function navigate(e) {
 </script>
 </head>
 <body onkeypress="return navigate(event)">
-<pre>
+<pre>                            Parsing a language called &quot;Foo&quot;
+                               with the Pegex toolset.    
 
-
-
-
-
-
-
-                            How Pegex Works
-
-    # Example usage in Python
-    from pegex import Grammar
-
-    data_tree =
-        Grammar(text=grammar_text, receiver=AST).parse(input)
-
-
-
-
-
-
-
-
-
-
+                              .-----------------------.
+  .--------------------.      |    Pegex::Compiler    |
+  |    Foo Language    |      |-----------------------|    Serialize
+  |--------------------|-----&gt;| Pegex::Pegex::Grammar |---------.
+  | Pegex grammar text |      | Pegex::Receiver       |         |
+  '--------------------'      '-----------------------'         v
+  ......................                  |                 .------.
+  |                    |                  | compile()       | YAML |
+  |foo:: &lt;verb&gt; &lt;noun&gt; |                  v                 '------'
+  |verb: /Hello/       |       .--------------------.       .------.
+  |noun: /world/       |       | Foo grammar tree   |       | JSON |
+  |                    |       '--------------------'       '------'
+  ......................                  |                 .------.
+                                          |                 | Perl |
+                                          v                 '------'
+                               .---------------------.      .--------.
+                               | Pegex::Foo::Grammar |      | Python |
+                               |---------------------|      '--------'
+                               | Pegex::Parser       |      .-----.
+                               | Pegex::Foo::AST     |      | etc |
+   .-----------------.         '---------------------'      '-----'
+   |  Foo Language   |                    |
+   |-----------------|-------------------&gt;| parse()
+   | Foo source text |                    v
+   '-----------------'        .----------------------.
+   ...................        | Parsed Foo Data Tree |
+   |Hello world      |        '----------------------'
+   ...................        ........................
+                              |- verb: Hello         |
+                              |- noun: world         |
+                              ........................
 </pre>
 </body>

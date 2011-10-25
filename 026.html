@@ -27,22 +27,22 @@ function navigate(e) {
 <pre>
 
 
-                            Pegex Live Demos
+
+
+
+
+                          Stupid Pegex Tricks
      
-     * Pegex Grammars
-       * ../pegex-pgx/
-       * ../testml-pgx/
-       * ../json-pgx/
-       * ../yaml-pgx/
-       * ../crontab-pgx/
-       * ../cdent-pgx/
-     * Pegex (Perl) Implementations
-       * ../pegex-json-pm/
-       * ../pegex-yaml-pm/
-       * ../pegex-pm/
-       * ../pegex-crontab-pm/
-     * TestML Example
-       * ../pegex-pm/t/compiler.t
+     perl -MXXX -MPegex::JSON -e 'XXX + Pegex::JSON-&gt;new-&gt;parse(q/{&quot;foo&quot;: 42, &quot;bar&quot;: [1,2,3]}/)'
+     
+     perl -MXXX -MPegex -e 'XXX pegex(&quot;src/pegex.pgx&quot;)-&gt;parse(&quot;src/pegex.pgx&quot;)'
+     
+     perl -MXXX -MPegex -e 'XXX pegex(&quot;src/pegex.pgx&quot;, {wrap=&gt;1})-&gt;parse(&quot;src/pegex.pgx&quot;)'
+     
+     perl -MXXX -MPegex -e 'XXX pegex(&quot;src/pegex.pgx&quot;, {receiver=&gt;&quot;Pegex::Pegex::AST&quot;})-&gt;parse(&quot;src/pegex.pgx&quot;)'
+
+
+
 
 
 

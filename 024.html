@@ -24,39 +24,33 @@ function navigate(e) {
 </script>
 </head>
 <body onkeypress="return navigate(event)">
-<pre>                            Parsing a language called &quot;Foo&quot;
-                               with the Pegex toolset.    
-
-                              .-----------------------.
-  .--------------------.      |    Pegex::Compiler    |
-  |    Foo Language    |      |-----------------------|    Serialize
-  |--------------------|-----&gt;| Pegex::Grammar::Pegex |---------.
-  | Pegex grammar text |      | Pegex::Receiver       |         |
-  '--------------------'      '-----------------------'         v
-  ......................                  |                 .------.
-  |                    |                  | compile()       | YAML |
-  |foo:: &lt;verb&gt; &lt;noun&gt; |                  v                 '------'
-  |verb: /Hello/       |       .--------------------.       .------.
-  |noun: /world/       |       | Foo grammar tree   |       | JSON |
-  |                    |       '--------------------'       '------'
-  ......................                  |                 .------.
-                                          |                 | Perl |
-                                          v                 '------'
-                               .---------------------.      .--------.
-                               | Pegex::Grammar::Foo |      | Python |
-                               |---------------------|      '--------'
-                               | Pegex::Parser       |      .-----.
-                               | Pegex::AST::Foo     |      | etc |
-   .-----------------.         '---------------------'      '-----'
-   |  Foo Language   |                    |
-   |-----------------|-------------------&gt;| parse()
-   | Foo source text |                    v
-   '-----------------'        .----------------------.
-   ...................        | Parsed Foo Data Tree |
-   |Hello world      |        '----------------------'
-   ...................        ........................
-                              |- verb: Hello         |
-                              |- noun: world         |
-                              ........................
+<pre>                          Some Pegex Trivia...
+     
+         ...before we play with Pegex
+     
+     * Pegex is pretty fast
+       * No optimizations yet
+     * Pegex is self hosting
+       * Pegex parses Pegex
+     * Pegex has no backtracking yet
+       * Not needed yet (&lt;first&gt; &lt;middle&gt;? &lt;last&gt;)
+     * Pegex tests are in TestML
+       * TestML is written in Pegex!
+     * Pegex is full on Perl
+       * Compiler and Runtime
+     * Python has port of the Runtime
+       * Easy to use Perl compiler to bootstrap (YAML, JSON)
+     * Pegex wants to be written in C'Dent
+       * Easier to port and maintain
+     * Pegex Runtime could be in C or C++ or Haskell
+       * libpegex
+     * Pegex Parsers can have multiple Receivers
+       * AST (wrapped and unwrapped) is default Receiver
+       * Receivers can invoke new Parsers
+     * Clean Separation
+       * Compiler = Grammar + Parser + Receiver
+       * All Subclassable or Swap-able
+     * Pegex::Regex
+       * Compare to Regexp::Grammars
 </pre>
 </body>

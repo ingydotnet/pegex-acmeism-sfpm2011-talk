@@ -28,20 +28,20 @@ function navigate(e) {
 
 
 
-                           Some JSON for You
+     # JSON Pegex Grammar
      
-         {
-             &quot;name&quot;: &quot;Homer Simpson&quot;,
-             &quot;cartoon&quot;: true,
-             &quot;age&quot;: 42,
-             &quot;food&quot;: [
-                 &quot;donut&quot;, &quot;donut&quot;, &quot;donut&quot;
-             ],
-             &quot;family&quot;: {
-                 &quot;wife&quot;: &quot;Marge&quot;,
-                 &quot;son&quot;: &quot;Bart&quot;
-             }
-         } 
+     json: &lt;map&gt; | &lt;seq&gt;
+     node: &lt;map&gt; | &lt;seq&gt; | &lt;scalar&gt;
+     map: /~&lt;LCURLY&gt;~/ &lt;pair&gt;* % /~&lt;COMMA&gt;~/ /~&lt;RCURLY&gt;~/
+     pair: &lt;string&gt; /~&lt;COLON&gt;~/ &lt;node&gt;
+     seq: /~&lt;LSQUARE&gt;~/ &lt;node&gt;* % /~&lt;COMMA&gt;~/ /~&lt;RSQUARE&gt;~/
+     scalar: &lt;string&gt; | &lt;number&gt; | &lt;boolean&gt; | &lt;null&gt;
+     string: /&lt;DOUBLE&gt;((?:&lt;BACK&gt;&lt;BACK&gt;|&lt;BACK&gt;&lt;DOUBLE&gt;|[^&lt;DOUBLE&gt;&lt;BREAK&gt;])*)&lt;DOUBLE&gt;/
+     number: /(&lt;DASH&gt;?&lt;DIGIT&gt;+(?:&lt;DOT&gt;&lt;DIGIT&gt;*)?|&lt;DOT&gt;&lt;DIGIT&gt;+)/
+     boolean: &lt;true&gt; | &lt;false&gt;
+     true: /true/
+     false: /false/
+     null: /null/
 
 
 
