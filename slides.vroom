@@ -1,0 +1,421 @@
+---- config
+title: Pegex and Acmeism
+indent: 5
+height: 25
+width: 72
+skip: 0
+
+---- center
+Pegex and Acmeism
+
+by Ingy döt Net
+
+San Francisco Perl Mongers
+
+Tuesday, October 25, 2011
+
+----
+== Ingy döt Net
+
+* Inventor of YAML
+* Father of Acmeism
+  * Love of all Programming Languages and Communities
+* GitHub Groupy
+  * More GitHub repos than anyone...
++    * In Seattle :)
+
+----
+== Ingy ♥  Modules
+
+* Perl Icon
+  * 100+ Perl modules on CPAN
+  * 40+ Perl related events
+* JavaScript Hacker
+  * Many JSAN modules
+* Python Lover
+  * Several PyPI modules
+* Bash Boy
+  * Bash code, tests, docs
+* Ruby Nuby
+  * No gems yet...
+* Haskell Rascal
+  * Pugs is back!
+
+----
+== What is Acmeism?
+
+A) 1910-1912 Russian Poetry Movement?
+B) The Religion of Silly Perl Modules?
+3) The Love of Orange?
+D) All/None of the Above
+
++    http://acmeism.org
+
+Acmeism is the belief that language naturally
+tends to divide people and ideas, but that
+technology can overcome this tendency.
+
+People who create technology that is not limited
+to a particular language are known as Acmeists.
+
+----
+== Acmeism
+
+Acmeism is about doing things that help
+several programming languages at once.
+
+C++ & Clojure & Erlang & CoffeeScript & Go &
+Java & JavaScript & Perl & PHP & Python &
+Ruby & Scala & Tcl & ...
+
+    http://rosettacode.org
+
+A Code Wiki - 402 Languages x 560 Problems
+
+----
+== Whence Acmeism?
+
+I have ported a lot of code:
+
+* Perl to JavaScript   (Jemplate)
+* JavaScript to Perl   (pQuery)
+* Python to Perl       (PyYaml)
+* Perl to Python       (TestML)
+
+----
+== All Languages Are The Same
+
+* Line for line. Idiom for idiom.
+* Languages let people tell computers what to do.
+* All OO languages have a common set of components.
+
+----
+== Don't believe me?
+
+Look at this...
+
+---- include yaml-examples
+
+----
+== Modules - The Nexus of Acmeist Hacking
+
+* Modules are the key to (Post)Modern Programming
+* They encapsulate ideas
+* All languages have the same need of modules
+
+My focus for Acmeism is to make ideas (modules)
+sharable across languages and communities.
+
+----
+== What is a Module?
+
+* A Box containing:
+  * Code
+  * Doc
+  * Tests
+  * Installer
+
+* A Sharable Package
+
+----
+== My Goal as an Acmeist Developer
+
+* I Want to Release a Module
++* In 12 different languages
+  * CPAN, PyPI, RubyGems, JSAN, 6PAN, Hackage,
+    npm, PEAR, Maven, CEAN, BPAN, etc
++* At Once!
++* Every Day!
+
++* I would like to have 1000 modules in every language!
+
+----
+== How Can I Do That?
+
+* Pegex - Acmeist PEG Language
+  * PEG == Parsing Expression Grammar
+
++* C'Dent   - Acmeist Programming Language
+  * Compile your modules to any language
+
++* TestML - Acmeist Unit Test Framework
+  * Unit test language that runs in any environment
+
++* Stardoc - Acmeist Documentation
+  * Compile your docs to any other format
+
+----
+== Pegex - Portable Parsing from the Future
+
+* To Build New Things in Every Language
+  An Acmeist Parser is Very Helpful
+
+* Pegex is The Acmeist Parser/Grammar
+  * Write Once, Parse Everywhere
+
+* Pegex == PEG + Regex
+  * Parsing Expression Grammars
+  * Regular Expressions
+
+* Pegex is probably the Kernel of Acmeism
+
+----
+== Pegex - Portable Parsing from the Future
+
+* The best part of Perl 6 is Rules
+  * PEG Parsing Made Simple
+  * And verrrry sloooow... :)
+
+* Pegex is a pragmatic approach
+  * Perl 6 Ease of Use
+  * Every token is a (PCRE style) regular expression
+  * Possibly other parser backends
+    * Parsec, P6 Rules!
+
+* Regex is ubiquitous
+  * Will work almost anywhere
+  * And fast
+
+----
+== Some JSON for You
+
+    {
+        "name": "Homer Simpson",
+        "cartoon": true,
+        "age": 42,
+        "food": [
+            "donut", "donut", "donut"
+        ],
+        "family": {
+            "wife": "Marge",
+            "son": "Bart"
+        }
+    } 
+
+----
+# JSON Pegex Grammar
+
+json: <map> | <seq>
+node: <map> | <seq> | <scalar>
+map: /~<LCURLY>~/ <pair>* % /~<COMMA>~/ /~<RCURLY>~/
+pair: <string> /~<COLON>~/ <node>
+seq: /~<LSQUARE>~/ <node>* % /~<COMMA>~/ /~<RSQUARE>~/
+scalar: <string> | <number> | <boolean> | <null>
+string: /<DOUBLE>((?:<BACK><BACK>|<BACK><DOUBLE>|[^<DOUBLE><BREAK>])*)<DOUBLE>/
+number: /(<DASH>?<DIGIT>+(?:<DOT><DIGIT>*)?|<DOT><DIGIT>+)/
+boolean: <true> | <false>
+true: /true/
+false: /false/
+null: /null/
+
+---- yaml
+# Compiled JSON Pegex Grammar
++top: json
+json:
+  .any:
+  - .ref: map
+  - .ref: seq
+node:
+  .any:
+  - .ref: map
+  - .ref: seq
+  - .ref: scalar
+map:
+  .all:
+  - .rgx: \s*\{\s*
+  - +min: 0
+    .ref: pair
+    .sep:
+      .rgx: \s*,\s*
+  - .rgx: \s*\}\s*
+pair:
+  .all:
+  - .ref: string
+  - .rgx: \s*:\s*
+  - .ref: node
+seq:
+  .all:
+  - .rgx: \s*\[\s*
+  - +min: 0
+    .ref: node
+    .sep:
+      .rgx: \s*,\s*
+  - .rgx: \s*\]\s*
+scalar:
+  .any:
+  - .ref: string
+  - .ref: number
+  - .ref: boolean
+  - .ref: 'null'
+string:
+  .rgx: '"((?:\\\\|\\"|[^"\n])*)"'
+number:
+  .rgx: (\-?[0-9]+(?:\.[0-9]*)?|\.[0-9]+)
+boolean:
+  .any:
+  - .ref: 'true'
+  - .ref: 'false'
+'true':
+  .rgx: 'true'
+'false':
+  .rgx: 'false'
+'null':
+  .rgx: 'null'
+
+---- i0
+
+== How Pegex Works
+
+    # Example usage in Python
+    from pegex import Grammar
+
+    data_tree =
+        Grammar(text=grammar_text, receiver=AST).parse(input)
+
+
+---- i0
+                            Parsing a language called "Foo"
+                               with the Pegex toolset.    
+
+                              .-----------------------.
+  .--------------------.      |    Pegex::Compiler    |
+  |    Foo Language    |      |-----------------------|    Serialize
+  |--------------------|----->| Pegex::Grammar::Pegex |---------.
+  | Pegex grammar text |      | Pegex::Receiver       |         |
+  '--------------------'      '-----------------------'         v
+  ......................                  |                 .------.
+  |                    |                  | compile()       | YAML |
+  |foo:: <verb> <noun> |                  v                 '------'
+  |verb: /Hello/       |       .--------------------.       .------.
+  |noun: /world/       |       | Foo grammar tree   |       | JSON |
+  |                    |       '--------------------'       '------'
+  ......................                  |                 .------.
+                                          |                 | Perl |
+                                          v                 '------'
+                               .---------------------.      .--------.
+                               | Pegex::Grammar::Foo |      | Python |
+                               |---------------------|      '--------'
+                               | Pegex::Parser       |      .-----.
+                               | Pegex::AST::Foo     |      | etc |
+   .-----------------.         '---------------------'      '-----'
+   |  Foo Language   |                    |
+   |-----------------|------------------->| parse()
+   | Foo source text |                    v
+   '-----------------'        .----------------------.
+   ...................        | Parsed Foo Data Tree |
+   |Hello world      |        '----------------------'
+   ...................        ........................
+                              |- verb: Hello         |
+                              |- noun: world         |
+                              ........................
+
+----
+== Some Pegex Trivia...
+
+    ...before we play with Pegex
+
+* Pegex is pretty fast
+  * No optimizations yet
+* Pegex is self hosting
+  * Pegex parses Pegex
+* Pegex has no backtracking yet
+  * Not needed yet (<first> <middle>? <last>)
+* Pegex tests are in TestML
+  * TestML is written in Pegex!
+* Pegex is full on Perl
+  * Compiler and Runtime
+* Python has port of the Runtime
+  * Easy to use Perl compiler to bootstrap (YAML, JSON)
+* Pegex wants to be written in C'Dent
+  * Easier to port and maintain
+* Pegex Runtime could be in C or C++ or Haskell
+  * libpegex
+* Pegex Parsers can have multiple Receivers
+  * AST (wrapped and unwrapped) is default Receiver
+  * Receivers can invoke new Parsers
+* Clean Separation
+  * Compiler = Grammar + Parser + Receiver
+  * All Subclassable or Swap-able
+* Pegex::Regex
+  * Compare to Regexp::Grammars
+
+----
+== Pegex Live Demos
+
+* Pegex Grammars
+  * ../pegex-pgx/
+  * ../testml-pgx/
+  * ../json-pgx/
+  * ../yaml-pgx/
+  * ../crontab-pgx/
+  * ../cdent-pgx/
+* Pegex (Perl) Implementations
+  * ../pegex-json-pm/
+  * ../pegex-yaml-pm/
+  * ../pegex-pm/
+  * ../pegex-crontab-pm/
+* TestML Example
+  * ../pegex-pm/t/compiler.t
+
+----
+== Stupid Pegex Tricks
+
+perl -MXXX -MPegex::JSON -e 'XXX + Pegex::JSON->new->parse(q/{"foo": 42, "bar": [1,2,3]}/)'
+
+perl -MXXX -MPegex -e 'XXX pegex("src/pegex.pgx")->parse("src/pegex.pgx")'
+
+perl -MXXX -MPegex -e 'XXX pegex("src/pegex.pgx", {wrap=>1})->parse("src/pegex.pgx")'
+
+perl -MXXX -MPegex -e 'XXX pegex("src/pegex.pgx", {receiver=>"Pegex::Pegex::AST"})->parse("src/pegex.pgx")'
+
+----
+== YAML2
+
+* YAML is a core Acmeist technology
+* YAML is ready for a 2.0 movement
+* Open Source is much richer than 2 years ago
+
+    %YAML 2.0
+
+* Not (100%) Backwards Compatible with YAML 1.2
+* Compatible with 2011
+* YAML2 Started Today
+
++       http://yaml2.org
+
+----
+== YAML2 Goals
+
+* YAML2 will become YAML 2.0
+* Keep all the Good Parts
+* Throw out the bad parts
+  * No more >
+  * No crazy default types: yes, no, !!timestamp
+  * Simpler tagging
+  * No key limits
+* Tests are the Spec
+* Everything on GitHub
+  * Community Spec, Tests and Implementation
+* Acmeist Implementations
+  * Pegex Grammar
+  * TestML Tests
+  * Stardoc Docs
+* Full Stack APIs
+
+----
+== YAML2 Projects
+
+* YAML2 Pegex Grammar
+* YAML2 TestML Suite
+* YAML2 Spec
+* YAML2 Book
+* YPath - Spec Started
+* YSchema
+* JSYNC - JavaScript + YAML(2)
+
+----
+== The End
+
+== Questions?
+
+== http://ingydotnet.github.com/pegex-acmeism-sfpm2011-talk/
